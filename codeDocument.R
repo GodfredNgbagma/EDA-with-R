@@ -25,9 +25,3 @@ sub_set <- data_set %>%
   pivot_wider(names_from = a12d, values_from = number, values_fill = 0) 
 view(sub_set)
 
-#number of male and female by sector of employment
-
-num_byEmployment <- absentees %>%
-  group_by(region, a12d) %>%
-  summarise(number = n(), .groups = 'drop') %>% 
-  pivot_wider(names_from = a12d, values_from = number, values_fill = 0)
