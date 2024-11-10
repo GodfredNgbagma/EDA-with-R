@@ -2,24 +2,32 @@
 
 library(tidyverse)
 library(readr)
+library(dplyr)
 
 # absentees data set
-absentees <- absentees_10_20221011d
-view(absentees) 
+data_set <- X10_2021PHC_CSV
+view(data_set) 
 
 #getting count of observations and variables
-dim(absentees)
+dim(data_set)
 
 #Identifying all variables with missing data
-colSums(is.na(absentees))
-colnames(is.na(absentees))
+colSums(is.na(data_set))
+colnames(is.na(data_set))
 
 #Computing the type of variables
-sapply(absentees, class)
+sapply(data_set, class)
 
 #number of male and female by region 
-head(absentees$a12)
-select(absentees,region = unique(absentees$region))
+sub_set <- data_set %>%
+  group_by(region, a12d) %>%
+  summarise(number = n(), .groups = 'drop') %>% 
+  pivot_wider(names_from = a12d, values_from = number, values_fill = 0) 
+view(sub_set)
 
+#number of male and female by sector of employment
 
-
+num_byEmployment <- absentees %>%
+  group_by(region, a12d) %>%
+  summarise(number = n(), .groups = 'drop') %>% 
+  pivot_wider(names_from = a12d, values_from = number, values_fill = 0)
